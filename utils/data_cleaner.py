@@ -1,5 +1,3 @@
-# utils/data_cleaner.py
-
 import pandas as pd
 from category_encoders import OneHotEncoder
 
