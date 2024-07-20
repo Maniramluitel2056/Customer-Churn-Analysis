@@ -92,20 +92,72 @@ Successfully loaded the raw dataset from `data/raw/Dataset (ATS)-1.csv`.
 - Cleaned data was saved to `data/interim/cleaned_dataset.csv`.
 - Cleaned data was also saved to `Data_Preparation/preprocessed_dataset/cleaned_dataset.csv`.
 
+
+# Task 2: Handle Missing Data and Encode Categorical Variables
+
+## Objective
+The objective of Task 2 is to further preprocess the data by handling any remaining missing values and encoding categorical variables. This will ensure that the dataset is ready for machine learning models.
+
+## Steps Taken and Explanations
+
+1. Importing Libraries and Modules
+
+```python
+import pandas as pd
+from sklearn.preprocessing import OneHotEncoder
+from handle_missing_and_encode import handle_missing_data, encode_categorical_variables
+```
+
+2. Handling Missing Data
+
+```python
+df_missing_handled = handle_missing_data(df_cleaned)
+```
+
+The `handle_missing_data` function is used to handle missing data points in the dataframe using mean imputation. This ensures that all numerical columns are complete and ready for analysis.
+
+3. Encoding Categorical Variables
+
+```python
+df_encoded = encode_categorical_variables(df_missing_handled)
+```
+
+The `encode_categorical_variables` function is used to encode categorical variables in the dataframe into numerical format using one-hot encoding. This transformation is essential for machine learning algorithms that require numerical input.
+
+4. Saving the Processed Data
+
+```python
+df_encoded.to_csv(interim_cleaned_data_path, index=False)
+df_encoded.to_csv(preprocessed_data_path, index=False)
+```
+
+The processed dataset is saved to the specified paths. This includes saving the dataset with handled missing values and encoded categorical variables for further use in the analysis pipeline.
+
+## Results Obtained
+
+#### Handling Missing Data
+- Missing values were handled using mean imputation.
+
+#### Encoding Categorical Variables
+- Categorical variables were encoded into numerical format using one-hot encoding.
+
+#### Saving Processed Data
+- Processed data was saved to `data/interim/cleaned_dataset.csv`.
+- Processed data was also saved to `Data_Preparation/preprocessed_dataset/cleaned_dataset.csv`.
+
 ## Summary
-In Task 1, I successfully set up a configuration file to manage file paths, loaded the raw dataset, performed data cleaning by handling missing values and encoding categorical variables, and saved the cleaned dataset to designated locations. This structured approach ensures that the data is prepared for subsequent analysis steps in a consistent and reproducible manner.
+
+In this script, the following steps were completed:
+
+1. Imported necessary libraries and modules.
+2. Handled missing data by using mean imputation.
+3. Encoded categorical variables using one-hot encoding.
+4. Saved the processed data to the interim and preprocessed paths.
 
 ## Next Steps
 
-1. **Handle Remaining Missing Data Points:**
-    - Implement strategies to handle any remaining missing data points to ensure data quality and completeness.
+1. Perform feature scaling and normalization to ensure that all features are on a comparable scale, which is crucial for the performance of many machine learning models.
+2. Conduct exploratory data analysis (EDA) to understand the data distribution, relationships between variables, and identify any anomalies or patterns.
+3. Document each step and summarize the results to ensure clarity and reproducibility for all team members and stakeholders involved in the project.
 
-2. **Feature Scaling and Normalization:**
-    - Apply scaling and normalization techniques to ensure features are on a comparable scale, which is crucial for the performance of many machine learning models.
-
-3. **Exploratory Data Analysis (EDA):**
-    - Conduct EDA to understand the data distributions, relationships between variables, and identify any anomalies or patterns.
-
-4. **Model Training:**
-    - Use the cleaned and preprocessed data to train machine learning models for predicting customer churn.
-
+**Note: For detailed documentation on the notebook, please refer to the notebook itself.**
