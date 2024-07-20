@@ -1,0 +1,6 @@
+{
+    "raw_data_path": "data/raw/Dataset (ATS)-1.csv",
+    "interim_cleaned_data_path": "data/interim/cleaned_dataset.csv",
+    "preprocessed_data_path": "Data_Preparation/preprocessed_dataset/cleaned_dataset.csv"
+  }
+  
