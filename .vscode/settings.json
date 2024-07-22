@@ -1,0 +1,17 @@
+{
+    "python.pythonPath": "C:\\Users\\iambh\\anaconda3\\envs\\churn_analysis\\python.exe",
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/utils",
+        "${workspaceFolder}/scripts"
+    ],
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/utils",
+        "${workspaceFolder}/scripts"
+    ],
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}"
+    }
+}
+
+
