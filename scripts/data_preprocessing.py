@@ -26,10 +26,11 @@ sys.path.append(os.path.join(project_root, 'utils'))
 # Import custom modules
 from data_loader import load_data
 from data_cleaner import clean_data
+from handle_missing_and_encode import handle_missing_and_encode
 
 def main():
     """
-    Main function to load, clean, and save the dataset.
+    Main function to load, clean, handle missing data, encode categorical variables, and save the dataset.
     """
     # Print the current working directory
     print(f"Current working directory: {os.getcwd()}")
@@ -54,12 +55,18 @@ def main():
         print("Data cleaning failed. Exiting the script.")
         return
 
-    # Save the cleaned dataset to interim
-    df_cleaned.to_csv(interim_cleaned_data_path, index=False)
-    # Save the cleaned dataset to preprocessed_dataset
-    df_cleaned.to_csv(preprocessed_data_path, index=False)
-    print(f"Cleaned data saved to interim at {interim_cleaned_data_path}")
-    print(f"Cleaned data saved to preprocessed_dataset at {preprocessed_data_path}")
+    # Handle missing data and encode categorical variables
+    df_processed = handle_missing_and_encode(df_cleaned)
+    if df_processed is None:
+        print("Data processing failed. Exiting the script.")
+        return
+
+    # Save the processed dataset to interim
+    df_processed.to_csv(interim_cleaned_data_path, index=False)
+    # Save the processed dataset to preprocessed_dataset
+    df_processed.to_csv(preprocessed_data_path, index=False)
+    print(f"Processed data saved to interim at {interim_cleaned_data_path}")
+    print(f"Processed data saved to preprocessed_dataset at {preprocessed_data_path}")
 
 if __name__ == "__main__":
     main()
