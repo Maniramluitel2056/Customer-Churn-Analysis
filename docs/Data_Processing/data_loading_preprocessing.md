@@ -211,8 +211,9 @@ In this documentation, I completed the following tasks:
 ## Next Steps
 
 1. Validate the integrity of the dataset and perform checks to ensure data consistency across different sources and stages (CCA5).
-2. Conduct exploratory data analysis (EDA) to understand the data distribution, relationships between variables, and identify any anomalies or patterns.
-3. Document each step and summarize the results to ensure clarity and reproducibility for all team members and stakeholders involved in the project.
+2. Implement the script to split the dataset into training and testing sets.
+3. Conduct exploratory data analysis (EDA) to understand the data distribution, relationships between variables, and identify any anomalies or patterns.
+4. Document each step and summarize the results to ensure clarity and reproducibility for all team members and stakeholders involved in the project.
 
 **Note**: For detailed documentation on the notebook, please refer to the notebook itself.
 
