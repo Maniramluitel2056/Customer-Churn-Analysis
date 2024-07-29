@@ -1,0 +1,31 @@
+{
+    "python.pythonPath": "C:\\Users\\iambh\\anaconda3\\envs\\churn_analysis\\python.exe",
+    // Specifies the path to the Python interpreter.
+    // Change this path to match the location of your Python executable.
+    // Example: "C:\\Path\\To\\Your\\Python\\Environment\\python.exe"
+
+    "python.envFile": "${workspaceFolder}/.env",
+    // Specifies the path to the environment file.
+    // This file contains environment variable definitions.
+    // Using "${workspaceFolder}" ensures the path is relative to the root of the workspace.
+
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/utils",
+        "${workspaceFolder}/scripts"
+    ],
+    // Provides additional paths for the auto-completion feature in Python.
+    // These paths are added to the auto-completion search paths, allowing for improved code suggestions and completions in these directories.
+
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/utils",
+        "${workspaceFolder}/scripts"
+    ],
+    // Adds extra paths for Python analysis.
+    // These paths are included in the analysis search paths to improve code linting and static analysis for these directories.
+
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}"
+    }
+    // Sets the PYTHONPATH environment variable for the integrated terminal.
+    // This allows the terminal to recognize the workspace as part of the Python path, ensuring imports from the workspace root are resolved correctly.
+}
