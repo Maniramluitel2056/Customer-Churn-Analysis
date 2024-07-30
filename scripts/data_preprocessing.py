@@ -12,7 +12,6 @@ with open(config_path, 'r') as f:
 
 # Convert relative paths to absolute paths
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 raw_data_path = os.path.join(project_root, config['raw_data_path'])
 interim_cleaned_data_path = os.path.join(project_root, config['interim_cleaned_data_path'])
 preprocessed_data_path = os.path.join(project_root, config['preprocessed_data_path'])

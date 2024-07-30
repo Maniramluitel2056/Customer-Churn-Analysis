@@ -135,10 +135,17 @@ This project aims to analyze customer churn data for a telecommunications compan
 ```bash
 python main.py
 ```
+
 ### Next Steps
 
 1. Review the validation results to confirm data integrity.
 2. Proceed with training machine learning models using the processed dataset.
 3. Document each step and summarize the results for clarity and reproducibility.
 
-Note: For detailed documentation on the preprocessing and validation steps, refer to data_loading_preprocessing.md and Data_Integrity_and_Consistency_Documentation.md.
+**Note** For detailed documentation on the preprocessing and validation steps, please refer to `Notebooks` or the following files:
+   - `config_and_setup.md` for configuration and setup information.
+   - `data_loading_preprocessing.md` for data loading and preprocessing documentation.
+   - `data_splitter_documentation.md` for data splitting documentation.
+   - `EDA_documentation.md` for exploratory data analysis documentation.
+   - `feature_engineering_.md` for feature engineering documentation.
+   - `main_workflow.md` for the main workflow documentation.
