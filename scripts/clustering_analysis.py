@@ -109,3 +109,28 @@ def determine_optimal_clusters(data, max_k=10):
 determine_optimal_clusters(min_max_scaled_df)
 determine_optimal_clusters(standard_scaled_df)
 
+# Function to interpret clusters
+def interpret_clusters(df, kmeans):
+    cluster_centers = pd.DataFrame(kmeans.cluster_centers_, columns=df.columns[:-1])
+    return cluster_centers
+
+# Interpret clusters for both datasets
+min_max_cluster_centers = interpret_clusters(min_max_segmented, min_max_kmeans)
+standard_scaled_cluster_centers = interpret_clusters(standard_scaled_segmented, standard_scaled_kmeans)
+
+# Save cluster centers
+min_max_cluster_centers_path = os.path.join(project_root, 'Clustering_Analysis/optimal_clusters/min_max_cluster_centers.csv')
+standard_scaled_cluster_centers_path = os.path.join(project_root, 'Clustering_Analysis/optimal_clusters/standard_scaled_cluster_centers.csv')
+
+min_max_cluster_centers.to_csv(min_max_cluster_centers_path, index=False)
+standard_scaled_cluster_centers.to_csv(standard_scaled_cluster_centers_path, index=False)
+
+# Update config.json with the new file paths
+config['min_max_cluster_centers_path'] = os.path.relpath(min_max_cluster_centers_path, project_root)
+config['standard_scaled_cluster_centers_path'] = os.path.relpath(standard_scaled_cluster_centers_path, project_root)
+
+with open(config_path, 'w') as f:
+    json.dump(config, f, indent=4)
+
+print(f"Updated config.json with paths: {config_path}")
+
