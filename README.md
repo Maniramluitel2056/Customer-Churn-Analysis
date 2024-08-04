@@ -142,7 +142,7 @@ python main.py
 2. Proceed with training machine learning models using the processed dataset.
 3. Document each step and summarize the results for clarity and reproducibility.
 
-**Note** For detailed documentation on the preprocessing and validation steps, please refer to `Notebooks` or the following files:
+**Note** For detailed documentation on the preprocessing and validation steps, please refer to `Notebooks` or the following files:-
    - `config_and_setup.md` for configuration and setup information.
    - `data_loading_preprocessing.md` for data loading and preprocessing documentation.
    - `data_splitter_documentation.md` for data splitting documentation.
