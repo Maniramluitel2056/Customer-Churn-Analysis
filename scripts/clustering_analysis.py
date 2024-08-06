@@ -3,6 +3,8 @@ import sys
 import json
 import pandas as pd
 from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Ensure the utils module can be found
 notebook_dir = os.path.dirname(os.path.abspath(__file__))
@@ -52,32 +54,51 @@ print(f"Preprocessed data path: {preprocessed_data_path}")
 print(f"Standard scaled data path: {standard_scaled_data_path}")
 print(f"Min-Max scaled data path: {min_max_scaled_data_path}")
 
-# Load preprocessed datasets
-min_max_scaled_df = pd.read_csv(min_max_scaled_data_path)
-standard_scaled_df = pd.read_csv(standard_scaled_data_path)
+# Load the min-max scaled data
+df_min_max_scaled = pd.read_csv(min_max_scaled_data_path)
+print(f"Min-Max scaled data loaded successfully from {min_max_scaled_data_path}")
+df_standard_scaled = pd.read_csv(standard_scaled_data_path)
+print(f"Standard scaled data loaded successfully from {standard_scaled_data_path}")
 
-# Apply KMeans
-def apply_kmeans(data, n_clusters=3):
+# Example of printing the first few rows to verify
+print("Standard Scaled Data:")
+print(df_standard_scaled.head())
+
+print("Min-Max Scaled Data:")
+print(df_min_max_scaled.head())
+
+# Function to apply K-means clustering and visualize clusters
+def apply_kmeans_and_visualize(df, scaling_label, n_clusters):
+     # Define path for saving visualizations inside the function
+    visualizations_path = os.path.join(project_root, 'Clustering_Analysis', 'visualizations')
+    os.makedirs(visualizations_path, exist_ok=True)
+    
+    # Use only the 'tenure' and 'MonthlyCharges' columns for clustering
+    features = df[['tenure', 'MonthlyCharges']]
+    
+    # Apply K-means clustering
     kmeans = KMeans(n_clusters=n_clusters, random_state=42)
-    clusters = kmeans.fit_predict(data)
-    data['Cluster'] = clusters
-    return kmeans, data
+    kmeans.fit(features)
+    
+    # Add cluster labels to the DataFrame
+    df['Cluster'] = kmeans.labels_
+    
+    # Visualize the clusters
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=df, x='tenure', y='MonthlyCharges', hue='Cluster', palette='viridis')
+    plt.title(f'Customer Segments based on Tenure and Monthly Charges ({scaling_label} - Assumed 3 Clusters)')
+    plt.xlabel('Tenure')
+    plt.ylabel('Monthly Charges')
+    plt.legend(title='Cluster')
+    
+    # Save the visualization
+    visualization_filename = f'{scaling_label.lower().replace(" ", "_")}_3_clusters_assumed.png'
+    visualization_filepath = os.path.join(visualizations_path, visualization_filename)
+    plt.savefig(visualization_filepath)
+    plt.close()
+    print(f'Saved cluster visualization: {visualization_filepath}')
 
-min_max_kmeans, min_max_segmented = apply_kmeans(min_max_scaled_df)
-standard_scaled_kmeans, standard_scaled_segmented = apply_kmeans(standard_scaled_df)
-
-# Save results
-min_max_segmented_path = os.path.join(project_root, 'Clustering_Analysis/kmeans_model/min_max_segmented.csv')
-standard_scaled_segmented_path = os.path.join(project_root, 'Clustering_Analysis/kmeans_model/standard_scaled_segmented.csv')
-
-min_max_segmented.to_csv(min_max_segmented_path, index=False)
-standard_scaled_segmented.to_csv(standard_scaled_segmented_path, index=False)
-
-# Update config.json with the new file paths
-config['min_max_segmented_path'] = os.path.relpath(min_max_segmented_path, project_root)
-config['standard_scaled_segmented_path'] = os.path.relpath(standard_scaled_segmented_path, project_root)
-
-with open(config_path, 'w') as f:
-    json.dump(config, f, indent=4)
-
-print(f"Updated config.json with paths: {config_path}")
+# Apply K-means clustering with an assumed number of clusters (3) for both datasets
+n_clusters = 3
+apply_kmeans_and_visualize(df_min_max_scaled, 'Min-Max Scaled', n_clusters)
+apply_kmeans_and_visualize(df_standard_scaled, 'Standard Scaled', n_clusters)
