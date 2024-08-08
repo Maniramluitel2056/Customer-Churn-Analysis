@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.metrics import silhouette_score
 
 # Ensure the utils module can be found
 notebook_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,24 +28,28 @@ except ImportError as e:
     sys.exit(1)
 
 # Load configuration
-config_path = os.path.join(project_root, 'config.json')
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')
 print(f"Config path: {config_path}")
-
-with open(config_path, 'r') as f: 
+with open(config_path, 'r') as f:
     config = json.load(f)
 
 # Convert relative paths to absolute paths
-raw_data_path = os.path.join(project_root, config['raw_data_path']) 
-interim_cleaned_data_path = os.path.join(project_root, config['interim_cleaned_data_path']) 
-preprocessed_data_path = os.path.join(project_root, config['preprocessed_data_path']) 
-standard_scaled_data_path = os.path.join(project_root, config['standard_scaled_path']) 
-min_max_scaled_data_path = os.path.join(project_root, config['min_max_scaled_path'])
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+raw_data_path = os.path.join(project_root, config['raw_data_path'])
+interim_cleaned_data_path = os.path.join(project_root, config['interim_cleaned_data_path'])
+preprocessed_data_path = os.path.join(project_root, config['preprocessed_data_path'])
+standard_scaled_data_path = os.path.join(project_root, 'data_preparation/scaling_techniques/standard_scaled_dataset.csv')
+min_max_scaled_data_path = os.path.join(project_root, 'data_preparation/scaling_techniques/min_max_scaled_dataset.csv')
 
-print(f"Raw data path: {raw_data_path}") 
-print(f"Interim cleaned data path: {interim_cleaned_data_path}") 
-print(f"Preprocessed data path: {preprocessed_data_path}") 
-print(f"Standard scaled data path: {standard_scaled_data_path}") 
-print(f"Min-Max scaled data path: {min_max_scaled_data_path}")
+print(f"Raw data path (absolute): {raw_data_path}")
+print(f"Interim cleaned data path (absolute): {interim_cleaned_data_path}")
+print(f"Preprocessed data path (absolute): {preprocessed_data_path}")
+print(f"Standard scaled data path (absolute): {standard_scaled_data_path}")
+print(f"Min-Max scaled data path (absolute): {min_max_scaled_data_path}")
+
+# Utility function to convert absolute path to relative path
+def to_relative_path(absolute_path, start_path):
+    return os.path.relpath(absolute_path, start=start_path).replace('\\', '/')
 
 # Load the min-max scaled data
 df_min_max_scaled = pd.read_csv(min_max_scaled_data_path)
@@ -61,7 +66,7 @@ print(df_min_max_scaled.head())
 
 # Function to apply K-means clustering and visualize clusters
 def apply_kmeans_and_visualize(df, scaling_label, n_clusters):
-     # Define path for saving visualizations inside the function
+    # Define path for saving visualizations inside the function
     visualizations_path = os.path.join(project_root, 'Clustering_Analysis', 'visualizations')
     os.makedirs(visualizations_path, exist_ok=True)
     

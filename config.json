@@ -8,7 +8,5 @@
     "min_max_scaled_path": "Data_Preparation/scaling_techniques/min_max_scaled_dataset.csv",
     "standard_scaled_path": "Data_Preparation/scaling_techniques/standard_scaled_dataset.csv",
     "training_set_path": "Data_Preparation/training_sets/train_dataset.csv",
-    "testing_set_path": "Data_Preparation/testing_sets/test_dataset.csv",
-    "min_max_segmented_path": "Clustering_Analysis\\kmeans_model\\min_max_segmented.csv",
-    "standard_scaled_segmented_path": "Clustering_Analysis\\kmeans_model\\standard_scaled_segmented.csv"
+    "testing_set_path": "Data_Preparation/testing_sets/test_dataset.csv"
 }
