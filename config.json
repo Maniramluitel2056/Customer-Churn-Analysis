@@ -14,5 +14,15 @@
     "min-max_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv",
     "standard_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv",
     "min-max_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/min-max_scaled_cluster_characteristics.csv",
-    "standard_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv"
+    "standard_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv",
+    "min_max_scatter_path": "Clustering_Analysis/visualizations/cluster_scatter_min-max_scaled.png",
+    "min_max_boxplots_tenure_path": "Clustering_Analysis/visualizations/cluster_boxplot_tenure_min-max_scaled.png",
+    "min_max_boxplots_charges_path": "Clustering_Analysis/visualizations/cluster_boxplot_charges_min-max_scaled.png",
+    "min_max_distribution_path": "Clustering_Analysis/visualizations/cluster_distribution_min-max_scaled.png",
+    "min_max_heatmap_path": "Clustering_Analysis/visualizations/cluster_heatmap_min-max_scaled.png",
+    "standard_scatter_path": "Clustering_Analysis/visualizations/cluster_scatter_standard_scaled.png",
+    "standard_boxplots_tenure_path": "Clustering_Analysis/visualizations/cluster_boxplot_tenure_standard_scaled.png",
+    "standard_boxplots_charges_path": "Clustering_Analysis/visualizations/cluster_boxplot_charges_standard_scaled.png",
+    "standard_distribution_path": "Clustering_Analysis/visualizations/cluster_distribution_standard_scaled.png",
+    "standard_heatmap_path": "Clustering_Analysis/visualizations/cluster_heatmap_standard_scaled.png"
 }
