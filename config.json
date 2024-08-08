@@ -10,5 +10,9 @@
     "training_set_path": "Data_Preparation/training_sets/train_dataset.csv",
     "testing_set_path": "Data_Preparation/testing_sets/test_dataset.csv",
     "min_max_segmented_path": "Clustering_Analysis\\kmeans_model\\min_max_segmented.csv",
-    "standard_scaled_segmented_path": "Clustering_Analysis\\kmeans_model\\standard_scaled_segmented.csv"
+    "standard_scaled_segmented_path": "Clustering_Analysis\\kmeans_model\\standard_scaled_segmented.csv",
+    "min-max_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv",
+    "standard_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv",
+    "min-max_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/min-max_scaled_cluster_characteristics.csv",
+    "standard_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv"
 }
