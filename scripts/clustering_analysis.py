@@ -30,14 +30,6 @@ except ImportError as e:
 config_path = os.path.join(project_root, 'config.json')
 print(f"Config path: {config_path}")
 
-with open(config_path, 'r') as f:
-    config = json.load(f)
-
-
-# Load configuration
-config_path = os.path.join(project_root, 'config.json')
-print(f"Config path: {config_path}")
-
 with open(config_path, 'r') as f: 
     config = json.load(f)
 
