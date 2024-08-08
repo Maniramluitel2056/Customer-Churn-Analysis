@@ -33,25 +33,25 @@ print(f"Config path: {config_path}")
 with open(config_path, 'r') as f:
     config = json.load(f)
 
-# Helper function to get path from config with error handling
-def get_path_from_config(key, config, project_root):
-    try:
-        return os.path.join(project_root, config[key])
-    except KeyError:
-        print(f"KeyError: '{key}' not found in config.json")
-        sys.exit(1)
+
+# Load configuration
+config_path = os.path.join(project_root, 'config.json')
+print(f"Config path: {config_path}")
+
+with open(config_path, 'r') as f: 
+    config = json.load(f)
 
 # Convert relative paths to absolute paths
-raw_data_path = get_path_from_config('raw_data_path', config, project_root)
-interim_cleaned_data_path = get_path_from_config('interim_cleaned_data_path', config, project_root)
-preprocessed_data_path = get_path_from_config('preprocessed_data_path', config, project_root)
-standard_scaled_data_path = get_path_from_config('standard_scaled_path', config, project_root)
-min_max_scaled_data_path = get_path_from_config('min_max_scaled_path', config, project_root)
+raw_data_path = os.path.join(project_root, config['raw_data_path']) 
+interim_cleaned_data_path = os.path.join(project_root, config['interim_cleaned_data_path']) 
+preprocessed_data_path = os.path.join(project_root, config['preprocessed_data_path']) 
+standard_scaled_data_path = os.path.join(project_root, config['standard_scaled_path']) 
+min_max_scaled_data_path = os.path.join(project_root, config['min_max_scaled_path'])
 
-print(f"Raw data path: {raw_data_path}")
-print(f"Interim cleaned data path: {interim_cleaned_data_path}")
-print(f"Preprocessed data path: {preprocessed_data_path}")
-print(f"Standard scaled data path: {standard_scaled_data_path}")
+print(f"Raw data path: {raw_data_path}") 
+print(f"Interim cleaned data path: {interim_cleaned_data_path}") 
+print(f"Preprocessed data path: {preprocessed_data_path}") 
+print(f"Standard scaled data path: {standard_scaled_data_path}") 
 print(f"Min-Max scaled data path: {min_max_scaled_data_path}")
 
 # Load the min-max scaled data
