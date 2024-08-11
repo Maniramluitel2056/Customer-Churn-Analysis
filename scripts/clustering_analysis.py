@@ -99,3 +99,51 @@ def apply_kmeans_and_visualize(df, scaling_label, n_clusters):
 n_clusters = 3
 apply_kmeans_and_visualize(df_min_max_scaled, 'Min-Max Scaled', n_clusters)
 apply_kmeans_and_visualize(df_standard_scaled, 'Standard Scaled', n_clusters)
+
+# Ensure the correct paths for saving visualizations
+optimal_clusters_path = os.path.join(project_root, 'Clustering_Analysis', 'optimal_clusters')
+os.makedirs(optimal_clusters_path, exist_ok=True)
+
+# Function to determine optimal number of clusters using the Elbow Method
+def determine_optimal_clusters(df, scaling_label):
+    features = df[['tenure', 'MonthlyCharges']]
+    wcss = []
+    for i in range(1, 11):
+        kmeans = KMeans(n_clusters=i, random_state=42)
+        kmeans.fit(features)
+        wcss.append(kmeans.inertia_)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, 11), wcss, marker='o')
+    plt.title(f'Elbow Method for Optimal Number of Clusters ({scaling_label})')
+    plt.xlabel('Number of Clusters')
+    plt.ylabel('WCSS')
+    optimal_clusters_filepath = os.path.join(optimal_clusters_path, f'elbow_method_{scaling_label.lower().replace(" ", "_")}.png')
+    plt.savefig(optimal_clusters_filepath)
+    plt.show()
+    print(f'Saved Elbow Method plot: {optimal_clusters_filepath}')
+
+# Function to determine optimal number of clusters using Silhouette Analysis
+def determine_optimal_clusters_with_silhouette(df, scaling_label):
+    features = df[['tenure', 'MonthlyCharges']]
+    silhouette_scores = []
+    for i in range(2, 11):
+        kmeans = KMeans(n_clusters=i, random_state=42)
+        kmeans.fit(features)
+        silhouette_scores.append(silhouette_score(features, kmeans.labels_))
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(2, 11), silhouette_scores, marker='o')
+    plt.title(f'Silhouette Analysis for Optimal Number of Clusters ({scaling_label})')
+    plt.xlabel('Number of Clusters')
+    plt.ylabel('Silhouette Score')
+    optimal_clusters_filepath = os.path.join(optimal_clusters_path, f'silhouette_analysis_{scaling_label.lower().replace(" ", "_")}.png')
+    plt.savefig(optimal_clusters_filepath)
+    plt.show()
+    print(f'Saved Silhouette Analysis plot: {optimal_clusters_filepath}')
+
+# Apply the Elbow Method and Silhouette Analysis to determine the optimal number of clusters for both datasets
+determine_optimal_clusters(df_min_max_scaled, 'Min-Max Scaled')
+determine_optimal_clusters(df_standard_scaled, 'Standard Scaled')
+determine_optimal_clusters_with_silhouette(df_min_max_scaled, 'Min-Max Scaled')
+determine_optimal_clusters_with_silhouette(df_standard_scaled, 'Standard Scaled')
