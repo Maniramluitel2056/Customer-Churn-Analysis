@@ -28,13 +28,12 @@ except ImportError as e:
     sys.exit(1)
 
 # Load configuration
-config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')
+config_path = os.path.join(project_root, 'config.json')
 print(f"Config path: {config_path}")
 with open(config_path, 'r') as f:
     config = json.load(f)
 
 # Convert relative paths to absolute paths
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 raw_data_path = os.path.join(project_root, config['raw_data_path'])
 interim_cleaned_data_path = os.path.join(project_root, config['interim_cleaned_data_path'])
 preprocessed_data_path = os.path.join(project_root, config['preprocessed_data_path'])
