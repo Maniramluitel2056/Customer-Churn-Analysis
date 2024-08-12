@@ -1,32 +1,67 @@
 import os
-import json  # Import the json module
+import sys
+import json
 import pandas as pd
+from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.cluster import KMeans
 
-# Define the path to the config file
+# Ensure the utils module can be found
+notebook_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(notebook_dir, '..'))
+utils_path = os.path.join(project_root, 'utils')
+
+print(f"Notebook directory: {notebook_dir}")
+print(f"Project root: {project_root}")
+print(f"Utils path: {utils_path}")
+
+if utils_path not in sys.path:
+    sys.path.append(utils_path)
+
+try:
+    from data_loader import load_data
+    from data_cleaner import clean_data
+    from handle_missing_and_encode import handle_missing_and_encode
+except ImportError as e:
+    print(f"Error importing module: {e}")
+    sys.exit(1)
+
+# Load configuration
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')
-
-# Load the configuration
+print(f"Config path: {config_path}")
 with open(config_path, 'r') as f:
     config = json.load(f)
 
-# Utility function to convert relative path to absolute path
-def to_absolute_path(relative_path, start_path):
-    return os.path.abspath(os.path.join(start_path, relative_path))
-
-# Define the project root and load paths from the config
+# Convert relative paths to absolute paths
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-min_max_clusters_path = to_absolute_path(config['min-max_scaled_4_clusters_path'], project_root)
-standard_clusters_path = to_absolute_path(config['standard_scaled_4_clusters_path'], project_root)
+standard_scaled_data_path = os.path.join(project_root, 'data_preparation/scaling_techniques/standard_scaled_dataset.csv')
+min_max_scaled_data_path = os.path.join(project_root, 'data_preparation/scaling_techniques/min_max_scaled_dataset.csv')
 
-# Load the clustered datasets
-df_min_max_clusters = pd.read_csv(min_max_clusters_path)
-print(f"Min-Max scaled clusters data loaded successfully from {min_max_clusters_path}")
-df_standard_clusters = pd.read_csv(standard_clusters_path)
-print(f"Standard scaled clusters data loaded successfully from {standard_clusters_path}")
+print(f"Standard scaled data path (absolute): {standard_scaled_data_path}")
+print(f"Min-Max scaled data path (absolute): {min_max_scaled_data_path}")
 
+# Load the datasets
+df_min_max_scaled = pd.read_csv(min_max_scaled_data_path)
+df_standard_scaled = pd.read_csv(standard_scaled_data_path)
+
+# Example of printing the first few rows to verify
+print("Standard Scaled Data:")
+print(df_standard_scaled.head())
+
+print("Min-Max Scaled Data:")
+print(df_min_max_scaled.head())
+
+# Function to apply K-means clustering
+def apply_kmeans(df, n_clusters=4):
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    df['Cluster'] = kmeans.fit_predict(df[['tenure', 'MonthlyCharges']])
+    return df
+
+# Apply K-means clustering without saving the results
+df_min_max_scaled_4_clusters = apply_kmeans(df_min_max_scaled)
+df_standard_scaled_4_clusters = apply_kmeans(df_standard_scaled)
+
+# Visualization functions
 # Define the path for saving visualizations
 visualizations_path = os.path.join(project_root, 'Clustering_Analysis', 'visualizations')
 os.makedirs(visualizations_path, exist_ok=True)
@@ -104,13 +139,14 @@ def plot_cluster_heatmap(df, scaling_label, save_path):
     plt.close()
 
 # Generate visualizations for Min-Max scaled clusters
-plot_cluster_scatter(df_min_max_clusters, 'Min-Max Scaled', visualizations_path, n_clusters=4)
-plot_cluster_boxplots(df_min_max_clusters, 'Min-Max Scaled', visualizations_path)
-plot_cluster_distribution(df_min_max_clusters, 'Min-Max Scaled', visualizations_path)
-plot_cluster_heatmap(df_min_max_clusters, 'Min-Max Scaled', visualizations_path)
+plot_cluster_scatter(df_min_max_scaled_4_clusters, 'Min-Max Scaled', visualizations_path, n_clusters=4)
+plot_cluster_boxplots(df_min_max_scaled_4_clusters, 'Min-Max Scaled', visualizations_path)
+plot_cluster_distribution(df_min_max_scaled_4_clusters, 'Min-Max Scaled', visualizations_path)
+plot_cluster_heatmap(df_min_max_scaled_4_clusters, 'Min-Max Scaled', visualizations_path)
 
 # Generate visualizations for Standard scaled clusters
-plot_cluster_scatter(df_standard_clusters, 'Standard Scaled', visualizations_path, n_clusters=4)
-plot_cluster_boxplots(df_standard_clusters, 'Standard Scaled', visualizations_path)
-plot_cluster_distribution(df_standard_clusters, 'Standard Scaled', visualizations_path)
-plot_cluster_heatmap(df_standard_clusters, 'Standard Scaled', visualizations_path)
+plot_cluster_scatter(df_standard_scaled_4_clusters, 'Standard Scaled', visualizations_path, n_clusters=4)
+plot_cluster_boxplots(df_standard_scaled_4_clusters, 'Standard Scaled', visualizations_path)
+plot_cluster_distribution(df_standard_scaled_4_clusters, 'Standard Scaled', visualizations_path)
+plot_cluster_heatmap(df_standard_scaled_4_clusters, 'Standard Scaled', visualizations_path)
+
