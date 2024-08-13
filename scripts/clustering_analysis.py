@@ -304,3 +304,4 @@ def analyze_and_save_cluster_characteristics(df, scaling_label):
 # Perform characteristics analysis on both datasets
 analyze_and_save_cluster_characteristics(df_min_max_scaled, 'Min-Max Scaled')
 analyze_and_save_cluster_characteristics(df_standard_scaled, 'Standard Scaled')
+
