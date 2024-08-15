@@ -85,15 +85,9 @@ def main():
     # Perform EDA before feature engineering
     perform_eda(df_cleaned)
 
-    # Create new features from the cleaned dataset
-    df_features = create_new_features(df_cleaned)
-    # Save the dataset with new features to the processed path
-    df_features.to_csv(processed_data_path, index=False)
-    print(f"Dataset with new features saved to {processed_data_path}")
-
     # Apply scaling techniques
-    df_standard_scaled = apply_standard_scaling(df_features)
-    df_min_max_scaled = apply_min_max_scaling(df_features)
+    df_standard_scaled = apply_standard_scaling(df_cleaned)
+    df_min_max_scaled = apply_min_max_scaling(df_cleaned)
     
     # Save the scaled datasets
     standard_scaled_data_path = os.path.join(project_root, 'data_preparation', 'scaling_techniques', 'standard_scaled_dataset.csv')
@@ -103,8 +97,14 @@ def main():
     print(f"Standard scaled data saved to {standard_scaled_data_path}")
     print(f"Min-Max scaled data saved to {min_max_scaled_data_path}")
 
+    # Create new features from the cleaned dataset
+    df_features = create_new_features(df_cleaned)
+    # Save the dataset with new features to the processed path
+    df_features.to_csv(processed_data_path, index=False)
+    print(f"Dataset with new features saved to {processed_data_path}")
+
     # Split the processed data with new features into training and testing datasets
-    train_df, test_df = split_data(df_features)
+    train_df, test_df = split_data(df_features, target_column='Churn_Yes')
     # Save the training and testing datasets to their respective paths
     train_df.to_csv(train_path, index=False)
     test_df.to_csv(test_path, index=False)
