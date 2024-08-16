@@ -53,7 +53,7 @@ print(df_min_max_scaled.head())
 
 # Function to apply K-means clustering
 def apply_kmeans(df, n_clusters=4):
-    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    kmeans = KMeans(n_clusters=n_clusters, init='k-means++', n_init=10, random_state=42)
     df['Cluster'] = kmeans.fit_predict(df[['tenure', 'MonthlyCharges']])
     return df
 
@@ -68,7 +68,7 @@ os.makedirs(visualizations_path, exist_ok=True)
 
 # Function to compute centroids
 def compute_centroids(df, n_clusters):
-    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    kmeans = KMeans(n_clusters=n_clusters, init='k-means++', n_init=10, random_state=42)
     kmeans.fit(df[['tenure', 'MonthlyCharges']])
     centroids = kmeans.cluster_centers_
     return centroids
