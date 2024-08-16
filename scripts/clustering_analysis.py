@@ -6,6 +6,9 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import silhouette_score
+import warnings
+warnings.simplefilter('always', FutureWarning)
+warnings.simplefilter('default')
 
 # Ensure the utils module can be found
 notebook_dir = os.path.dirname(os.path.abspath(__file__))
@@ -118,7 +121,7 @@ def apply_kmeans_and_visualize(df, scaling_label, n_clusters):
     features = df[['tenure', 'MonthlyCharges']]
     
     # Apply K-means clustering
-    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    kmeans = KMeans(n_clusters=n_clusters, init='k-means++', n_init=10, random_state=42)
     kmeans.fit(features)
     
     # Add cluster labels to the DataFrame
@@ -153,10 +156,10 @@ def determine_optimal_clusters(df, scaling_label):
     features = df[['tenure', 'MonthlyCharges']]
     wcss = []
     for i in range(1, 11):
-        kmeans = KMeans(n_clusters=i, random_state=42)
-        kmeans.fit(features)
-        wcss.append(kmeans.inertia_)
-
+         kmeans = KMeans(n_clusters=i, init='k-means++', n_init=10,  random_state=42)
+         kmeans.fit(features)
+         wcss.append(kmeans.inertia_)
+    
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, 11), wcss, marker='o')
     plt.title(f'Elbow Method for Optimal Number of Clusters ({scaling_label})')
@@ -178,8 +181,11 @@ def determine_optimal_clusters(df, scaling_label):
     plt.xlabel('Tenure')
     plt.ylabel('Monthly Charges')
     plt.legend(title='Cluster')
-    
+
     # Save the visualization
+    visualizations_path = os.path.join(project_root, 'Clustering_Analysis', 'visualizations')
+    os.makedirs(visualizations_path, exist_ok=True)
+    
     visualization_filename = f'{scaling_label.lower().replace(" ", "_")}_3_clusters_assumed.png'
     visualization_filepath = os.path.join(visualizations_path, visualization_filename)
     plt.savefig(visualization_filepath)
@@ -200,7 +206,7 @@ def determine_optimal_clusters(df, scaling_label):
     features = df[['tenure', 'MonthlyCharges']]
     wcss = []
     for i in range(1, 11):
-        kmeans = KMeans(n_clusters=i, random_state=42)
+        kmeans = KMeans(n_clusters=i, init='k-means++', n_init=10, random_state=42)
         kmeans.fit(features)
         wcss.append(kmeans.inertia_)
 
@@ -222,7 +228,7 @@ def determine_optimal_clusters_with_silhouette(df, scaling_label):
     features = df[['tenure', 'MonthlyCharges']]
     silhouette_scores = []
     for i in range(2, 11):
-        kmeans = KMeans(n_clusters=i, random_state=42)
+        kmeans = KMeans(n_clusters=i, init='k-means++', n_init=10, random_state=42)
         kmeans.fit(features)
         silhouette_scores.append(silhouette_score(features, kmeans.labels_))
 
@@ -245,7 +251,7 @@ determine_optimal_clusters_with_silhouette(df_standard_scaled, 'Standard Scaled'
 # Function to fit KMeans and analyze clusters
 def fit_kmeans_and_analyze(df, scaling_label):
     # Fit the KMeans model with 4 clusters
-    kmeans = KMeans(n_clusters=4, random_state=42)
+    kmeans = KMeans(n_clusters=4, init='k-means++', n_init=10,  random_state=42)
     df['Cluster'] = kmeans.fit_predict(df[['tenure', 'MonthlyCharges']])
     
     # Display the first few rows with cluster assignments
