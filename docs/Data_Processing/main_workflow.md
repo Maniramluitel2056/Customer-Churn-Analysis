@@ -216,3 +216,198 @@ if __name__ == "__main__":
 
 This document outlines the detailed steps involved in the data processing, feature engineering, and exploratory data analysis pipeline. Each script and notebook plays a crucial role in transforming raw data into a cleaned, processed, and feature-rich dataset ready for machine learning model development. Ensure that all configurations and environment setups are correctly followed to achieve a smooth workflow execution.
 
+# Clustering Analysis and Visualization: Main Workflow
+
+## Overview
+This document provides an overview of the entire clustering analysis process, including data preparation, the application of the K-means algorithm, determination of the optimal number of clusters using the Elbow Method and Silhouette Analysis, and comprehensive visualization of the results. Each step is linked to relevant scripts for a complete understanding of the workflow.
+
+## Environment Setup
+Description: Import necessary libraries and configure paths to ensure utility modules are accessible.
+
+```python
+import os
+import sys
+import json
+import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set up paths for utility modules
+notebook_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(notebook_dir, '..'))
+utils_path = os.path.join(project_root, 'utils')
+
+if utils_path not in sys.path:
+    sys.path.append(utils_path)
+```
+
+### Step 3: Load Configuration and Datasets
+### Script: scripts/clustering_analysis.py
+Description: Load the preprocessed datasets, including both Min-Max scaled and Standard scaled data, for clustering analysis.
+
+```python
+# Load configuration and datasets
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')
+with open(config_path, 'r') as f:
+    config = json.load(f)
+
+min_max_scaled_data_path = os.path.join(project_root, 'data_preparation/scaling_techniques/min_max_scaled_dataset.csv')
+standard_scaled_data_path = os.path.join(project_root, 'data_preparation/scaling_techniques/standard_scaled_dataset.csv')
+
+df_min_max_scaled = pd.read_csv(min_max_scaled_data_path)
+df_standard_scaled = pd.read_csv(standard_scaled_data_path)
+```
+
+### Step 4: Applying K-means Clustering
+### Script: scripts/clustering_analysis.py
+Description: Apply K-means clustering to segment customers into groups based on tenure and monthly charges. For this demonstration, we assume 3 clusters. The following code applies the K-means algorithm to the dataset.
+
+```python
+def apply_kmeans_and_visualize(df, scaling_label, n_clusters=3):
+    features = df[['tenure', 'MonthlyCharges']]
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    df['Cluster'] = kmeans.fit_predict(features)
+```
+
+### Step 5: Determining the Optimal Number of Clusters
+### Script: scripts/clustering_analysis.py
+Description: Identify the optimal number of clusters using the Elbow Method and Silhouette Analysis.
+
+```python
+# elbow method
+def determine_optimal_clusters(df, scaling_label):
+    features = df[['tenure', 'MonthlyCharges']]
+    wcss = []
+    for i in range(1, 11):
+        kmeans = KMeans(n_clusters=i, random_state=42)
+        wcss.append(kmeans.inertia_)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, 11), wcss, marker='o')
+    plt.title(f'Elbow Method for {scaling_label}')
+    plt.xlabel('Number of Clusters')
+    plt.ylabel('WCSS')
+    plt.savefig(f'elbow_method_{scaling_label.lower().replace(" ", "_")}.png')
+    plt.close()
+
+determine_optimal_clusters(df_min_max_scaled, 'Min-Max Scaled')
+determine_optimal_clusters(df_standard_scaled, 'Standard Scaled')
+
+# Silhouette Analysis
+from sklearn.metrics import silhouette_score
+
+def silhouette_analysis(df, scaling_label):
+    features = df[['tenure', 'MonthlyCharges']]
+    silhouette_scores = []
+    for i in range(2, 11):
+        kmeans = KMeans(n_clusters=i, random_state=42)
+        kmeans.fit(features)
+        score = silhouette_score(features, kmeans.labels_)
+        silhouette_scores.append(score)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(2, 11), silhouette_scores, marker='o')
+    plt.title(f'Silhouette Analysis for {scaling_label}')
+    plt.xlabel('Number of Clusters')
+    plt.ylabel('Silhouette Score')
+    plt.savefig(f'silhouette_analysis_{scaling_label.lower().replace(" ", "_")}.png')
+    plt.close()
+```
+
+### Step 6: Training the Final Model
+### Script: scripts/clustering_analysis.py
+Description: Train the K-means model using the identified optimal number of clusters and analyze the results.
+
+```python
+def fit_kmeans_and_analyze(df, scaling_label, n_clusters=4):
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    df['Cluster'] = kmeans.fit_predict(df[['tenure', 'MonthlyCharges']])
+    
+    kmeans_model_path = os.path.join(project_root, 'Clustering_Analysis', 'kmeans_model')
+    os.makedirs(kmeans_model_path, exist_ok=True)
+    
+    result_filename = f'{scaling_label.lower().replace(" ", "_")}_4_clusters.csv'
+    result_filepath = os.path.join(kmeans_model_path, result_filename)
+    df.to_csv(result_filepath, index=False)
+    print(f'Saved cluster assignments to: {result_filepath}')
+```
+
+### Step 7: Visualization of Clustering Results
+### Script: utils/visualizations.py
+Description: Description: Generate visualizations using the datasets that include the cluster assignments for 4 clusters. The visualizations are based on the saved CSV files from the previous step
+
+```python
+# Load configuration file to get the paths for the clustered data
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')
+with open(config_path, 'r') as f:
+    config = json.load(f)
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+min_max_clusters_path = to_absolute_path(config['min-max_scaled_4_clusters_path'], project_root)
+standard_clusters_path = to_absolute_path(config['standard_scaled_4_clusters_path'], project_root)
+
+def plot_cluster_scatter(df, scaling_label):
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=df, x='tenure', y='MonthlyCharges', hue='Cluster', palette='viridis')
+    plt.title(f'{scaling_label} - Clusters')
+    plt.savefig(f'{scaling_label.lower().replace(" ", "_")}_clusters_scatter.png')
+    plt.close()
+
+    def plot_cluster_boxplots(df, scaling_label):
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x='Cluster', y='MonthlyCharges', data=df, palette='viridis')
+    plt.title(f'{scaling_label} - Monthly Charges by Cluster')
+    plt.savefig(f'{scaling_label.lower().replace(" ", "_")}_boxplot_charges.png')
+    plt.close()
+
+    plt.figure(figsize=(10, 6))
+    sns.boxplot(x='Cluster', y='tenure', data=df, palette='viridis')
+    plt.title(f'{scaling_label} - Tenure by Cluster')
+    plt.savefig(f'{scaling_label.lower().replace(" ", "_")}_boxplot_tenure.png')
+    plt.close()
+
+    def plot_cluster_distribution(df, scaling_label):
+    plt.figure(figsize=(10, 6))
+    sns.countplot(x='Cluster', data=df, palette='viridis')
+    plt.title(f'{scaling_label} - Cluster Distribution')
+    plt.savefig(f'{scaling_label.lower().replace(" ", "_")}_distribution.png')
+    plt.close()
+
+    def plot_cluster_heatmap(df, scaling_label):
+    cluster_summary = df.groupby('Cluster').agg({
+        'tenure': 'mean',
+        'MonthlyCharges': 'mean'
+    }).reset_index()
+    
+    plt.figure(figsize=(10, 6))
+    sns.heatmap(cluster_summary.set_index('Cluster').T, annot=True, cmap='viridis')
+    plt.title(f'{scaling_label} - Cluster Heatmap')
+    plt.savefig(f'{scaling_label.lower().replace(" ", "_")}_heatmap.png')
+    plt.close()
+```
+
+### Step 8: Apply Visualizations to Both Min-Max and Standard Scaled Datasets
+```python
+# Load the clustered datasets with 4 clusters
+df_min_max_clusters = pd.read_csv(min_max_clusters_path)
+df_standard_clusters = pd.read_csv(standard_clusters_path)
+
+# Define the paths where visualizations will be saved
+visualizations_path = os.path.join(project_root, 'Clustering_Analysis', 'visualizations')
+
+# Generate visualizations for Min-Max scaled clusters
+plot_cluster_scatter(df_min_max_clusters, 'Min-Max Scaled', visualizations_path, n_clusters=4)
+plot_cluster_boxplots(df_min_max_clusters, 'Min-Max Scaled', visualizations_path)
+plot_cluster_distribution(df_min_max_clusters, 'Min-Max Scaled', visualizations_path)
+plot_cluster_heatmap(df_min_max_clusters, 'Min-Max Scaled', visualizations_path)
+
+# Generate visualizations for Standard scaled clusters
+plot_cluster_scatter(df_standard_clusters, 'Standard Scaled', visualizations_path, n_clusters=4)
+plot_cluster_boxplots(df_standard_clusters, 'Standard Scaled', visualizations_path)
+plot_cluster_distribution(df_standard_clusters, 'Standard Scaled', visualizations_path)
+plot_cluster_heatmap(df_standard_clusters, 'Standard Scaled', visualizations_path)
+```
+
+### Step 9: Summary
+This document outlines the detailed steps involved in the clustering analysis and visualization process, from environment setup, data preparation, applying the clustering algorithm, determining the optimal number of clusters using the Elbow Method and Silhouette Analysis, to training the final model and generating comprehensive visualizations. Each script plays a crucial role in segmenting customers, analyzing the clusters, and providing clear, actionable insights through detailed visual representations.

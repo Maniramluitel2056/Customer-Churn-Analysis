@@ -1,5 +1,5 @@
 import json
-import pandas as pd
+import pandas as pd # type: ignore
 import os
 
 # Load configuration file

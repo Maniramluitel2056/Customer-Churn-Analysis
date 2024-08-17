@@ -136,16 +136,116 @@ This project aims to analyze customer churn data for a telecommunications compan
 python main.py
 ```
 
-### Next Steps
 
-1. Review the validation results to confirm data integrity.
-2. Proceed with training machine learning models using the processed dataset.
-3. Document each step and summarize the results for clarity and reproducibility.
+# Customer Churn Analysis Project - Clustering Analysis
 
-**Note** For detailed documentation on the preprocessing and validation steps, please refer to `Notebooks` or the following files:
-   - `config_and_setup.md` for configuration and setup information.
-   - `data_loading_preprocessing.md` for data loading and preprocessing documentation.
-   - `data_splitter_documentation.md` for data splitting documentation.
-   - `EDA_documentation.md` for exploratory data analysis documentation.
-   - `feature_engineering_.md` for feature engineering documentation.
-   - `main_workflow.md` for the main workflow documentation.
+## Project Overview
+
+This project aims to segment customers based on their tenure and monthly charges using clustering analysis. The goal is to identify key customer segments and develop strategies to improve customer retention.
+
+## Project Structure
+
+- **clustering_analysis.py**: Script to perform K-means clustering on the preprocessed datasets.
+- **visualizations.py**: Script to generate visualizations for interpreting the clustering results.
+- **settings.json**: Configuration file with paths and settings for the project.
+- **.env**: Environment configuration file.
+
+## Tasks Completed
+
+### Task 7: Clustering Analysis Setup and Configuration (CCA-22)
+
+1. **Objective**: Set up the environment and configure necessary files for clustering analysis.
+2. **Scripts Used**:
+    - `clustering_analysis.py`
+    - `visualizations.py`
+3. **Steps**:
+    - Set up the project environment using `conda`.
+    - Configured paths and settings in `settings.json` and `.env` files.
+4. **Output**:
+    - Environment ready for clustering analysis.
+
+### Task 8: Applying K-Means Clustering (CCA-22)
+
+1. **Objective**: Apply K-means clustering to segment customers based on their tenure and monthly charges, assuming the number of clusters to be 3 as an example.
+2. **Scripts Used**:
+    - `clustering_analysis.py`
+3. **Steps**:
+    - Loaded preprocessed datasets (Min-Max scaled and Standard scaled).
+    - Applied K-means clustering to both datasets.
+4. **Output**:
+    - Visualizations saved to `Clustering_Analysis/Visualizations`:
+        - `min_max_scaled_3_clusters_assumed.png`
+        - `standard_scaled_3_clusters_assumed.png`
+
+### Task 9: Determining the Optimal Number of Clusters (CCA-22)
+
+1. **Objective**: Determine the optimal number of clusters using the Elbow Method and Silhouette Analysis.
+2. **Scripts Used**:
+    - `clustering_analysis.py`
+3. **Steps**:
+    - Applied the Elbow Method to evaluate the within-cluster sum of squares (WCSS).
+    - Applied Silhouette Analysis to assess the quality of clustering.
+    - Visualized and interpreted the results to confirm the optimal number of clusters.
+4. **Output**:
+    - Elbow Method and Silhouette Analysis plots saved to `Clustering_Analysis/optimal_clusters`.
+
+### Task 10: Training the Clustering Model and Interpreting Results (CCA-22)
+
+1. **Objective**: Train the clustering model with the optimal number of clusters and analyze the characteristics of each cluster.
+2. **Scripts Used**:
+    - `clustering_analysis.py`
+3. **Steps**:
+    - Trained the K-means model using 4 clusters for both Min-Max scaled and Standard scaled datasets.
+    - Analyzed and saved the cluster characteristics.
+    - Updated `settings.json` with paths for the cluster assignments and characteristics.
+4. **Output**:
+    - Cluster characteristics saved to:
+        - `Clustering_Analysis/kmeans_model/min-max_scaled_cluster_characteristics.csv`
+        - `Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv`
+    - Cluster assignments saved to:
+        - `Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv`
+        - `Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv`
+
+### Task 11: Visualizing Clustering Results (CCA-22)
+
+1. **Objective**: Generate visualizations to aid in the interpretation of clustering results.
+2. **Scripts Used**:
+    - `visualizations.py`
+3. **Steps**:
+    - Created scatter plots, boxplots, distribution plots, and heatmaps for both Min-Max scaled and Standard scaled datasets.
+    - Saved visualizations to the specified paths.
+4. **Output**:
+    - Visualizations saved to `Clustering_Analysis/visualizations`.
+
+## Configuration
+## How to Run
+
+1. Ensure all required packages are installed.
+2. Set up the environment variables from the `.env` file.
+3. Execute `clustering_analysis.py` and `visualizations.py` to run the clustering analysis workflow.
+
+`python clustering_analysis.py`
+
+## Next Steps
+
+1. Review the clustering results and visualizations to confirm the validity of the clusters.
+2. Use the clustered data to develop targeted strategies for customer retention.
+3. Implement and train an Artificial Neural Network (ANN) model to predict customer churn based on the clustering results and other key features.
+4. Document each step and summarize the results for clarity and reproducibility.
+
+**Note** For detailed documentation on the preprocessing, validation, and clustering analysis steps, please refer to the following files:
+
+- **Data Processing Documentation**:
+   - `config_and_setup.md`: Configuration and setup information.
+   - `data_loading_preprocessing.md`: Data loading and preprocessing documentation.
+   - `data_splitter_documentation.md`: Data splitting documentation.
+   - `EDA_documentation.md`: Exploratory data analysis documentation.
+   - `feature_engineering_.md`: Feature engineering documentation.
+   - `main_workflow.md`: Main workflow documentation.
+
+- **Clustering Analysis Documentation**:
+   - `clustering_setup_and_config.md`: Setting up the environment and configuring the clustering analysis pipeline.
+   - `kmeans_model.md`: K-means clustering process and customer segmentation steps.
+   - `optimal_clusters.md`: Determining the optimal number of clusters using the Elbow Method and Silhouette Analysis.
+   - `train_clustering_model.md`: Training the clustering model and interpreting the results.
+   - `visualizations.md`: Creating visualizations to interpret clustering results.

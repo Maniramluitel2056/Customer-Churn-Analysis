@@ -1,5 +1,5 @@
-import pandas as pd
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+import pandas as pd # type: ignore
+from sklearn.preprocessing import StandardScaler, MinMaxScaler # type: ignore
 
 def apply_standard_scaling(df):
     """
