@@ -1,6 +1,6 @@
-import pandas as pd
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder
+import pandas as pd # type: ignore
+from sklearn.impute import SimpleImputer # type: ignore
+from sklearn.preprocessing import OneHotEncoder # type: ignore
 
 print("Executing handle_missing_and_encode.py")  # Debugging print statement to indicate the script is running
 

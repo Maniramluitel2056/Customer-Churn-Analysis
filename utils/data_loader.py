@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd # type: ignore
 
 print("Executing data_loader.py")  # Debugging print statement to indicate the script is running
 

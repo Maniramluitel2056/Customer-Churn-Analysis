@@ -1,10 +1,10 @@
 import os
 import sys
 import json
-import pandas as pd
-from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-import seaborn as sns
+import pandas as pd # type: ignore
+from sklearn.cluster import KMeans # type: ignore
+import matplotlib.pyplot as plt # type: ignore # type: ignore
+import seaborn as sns # type: ignore
 
 # Ensure the utils module can be found
 notebook_dir = os.path.dirname(os.path.abspath(__file__))

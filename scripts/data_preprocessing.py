@@ -1,8 +1,8 @@
 import json
-import pandas as pd
+import pandas as pd # type: ignore
 import sys
 import os
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler # type: ignore
 
 # Load configuration
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'config.json')

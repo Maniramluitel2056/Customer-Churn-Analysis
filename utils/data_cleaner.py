@@ -1,5 +1,5 @@
-import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
+import pandas as pd # type: ignore
+from sklearn.preprocessing import OneHotEncoder # type: ignore
 
 def clean_data(df):
     """

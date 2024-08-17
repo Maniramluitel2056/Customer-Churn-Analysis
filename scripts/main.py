@@ -1,5 +1,5 @@
 import json
-import pandas as pd
+import pandas as pd # type: ignore # type: ignore
 import sys
 import os
 import warnings
@@ -113,11 +113,11 @@ def main():
 import os
 import sys
 import json
-import pandas as pd
-from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import silhouette_score
+import pandas as pd # type: ignore
+from sklearn.cluster import KMeans # type: ignore # type: ignore
+import matplotlib.pyplot as plt # type: ignore # type: ignore
+import seaborn as sns # type: ignore
+from sklearn.metrics import silhouette_score # type: ignore # type: ignore
 import warnings
 warnings.simplefilter('always', FutureWarning)
 warnings.simplefilter('default')
@@ -426,10 +426,10 @@ analyze_and_save_cluster_characteristics(df_standard_scaled, 'Standard Scaled')
 import os
 import sys
 import json
-import pandas as pd
-from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-import seaborn as sns
+import pandas as pd # type: ignore
+from sklearn.cluster import KMeans # type: ignore
+import matplotlib.pyplot as plt # type: ignore
+import seaborn as sns # type: ignore # type: ignore
 
 # Ensure the utils module can be found
 notebook_dir = os.path.dirname(os.path.abspath(__file__))
