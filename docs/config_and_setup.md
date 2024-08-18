@@ -40,11 +40,17 @@ The `config.json` file contains paths and settings required for various scripts.
     "raw_data_path": "data/raw/Dataset (ATS)-1.csv",
     "interim_cleaned_data_path": "data/interim/cleaned_dataset.csv",
     "preprocessed_data_path": "Data_Preparation/preprocessed_dataset/cleaned_dataset.csv",
+    "processed_data_path": "data/processed/processed_dataset_with_features.csv",
     "train_data_path": "data/train/train_dataset.csv",
     "test_data_path": "data/test/test_dataset.csv",
-    "processed_data_path": "data/processed/processed_dataset_with_features.csv",
-    "training_set_path": "Data_Preparation/training_sets/train_dataset_selected.csv",
-    "testing_set_path": "Data_Preparation/testing_sets/test_dataset_selected.csv"
+    "min_max_scaled_path": "Data_Preparation/scaling_techniques/min_max_scaled_dataset.csv",
+    "standard_scaled_path": "Data_Preparation/scaling_techniques/standard_scaled_dataset.csv",
+    "training_set_path": "Data_Preparation/training_sets/train_dataset.csv",
+    "testing_set_path": "Data_Preparation/testing_sets/test_dataset.csv",
+    "min-max_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv",
+    "standard_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv",
+    "min-max_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/min-max_scaled_cluster_characteristics.csv",
+    "standard_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv"
 }
 ```
 
@@ -78,36 +84,3 @@ The `settings.json` file is used to configure the project settings in your devel
 }
 ```
 
-## Running the Scripts
-
-1. Data Preprocessing:
-
-```
-python scripts/data_preprocessing.py
-```
-
-2. Data Splitting:
-
-```
-python scripts/data_splitter.py
-```
-
-3. Feature Engineering:
-
-```
-python scripts/feature_engineering.py
-```
-
-4. Feature Selection:
-
-```
-python scripts/feature_selector.py
-```
-
-5. Main Workflow:
-
-```
-python scripts/main.py
-```
-
-**Note**: Ensure all paths and configurations are correctly set before running the scripts.
