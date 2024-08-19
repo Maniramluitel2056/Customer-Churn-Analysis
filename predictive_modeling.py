@@ -3,10 +3,10 @@ import sys
 
 import json
 import pandas as pd
-from tensorflow.keras.models import Sequential # type: ignore
-from tensorflow.keras.layers import Dense, Dropout # type: ignore
-from tensorflow.keras.optimizers import Adam # type: ignore
-from tensorflow.keras.callbacks import ModelCheckpoint # type: ignore
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import ModelCheckpoint
 
 # Add the parent directory to the sys.path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
