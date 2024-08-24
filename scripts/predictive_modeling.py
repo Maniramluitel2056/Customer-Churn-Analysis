@@ -1,17 +1,30 @@
 import os
 import sys
-
 import json
+import numpy as np
+import tensorflow as tf
+import random
 import pandas as pd
 from tensorflow.keras.models import Sequential # type: ignore
 from tensorflow.keras.layers import Dense, Dropout # type: ignore
 from tensorflow.keras.optimizers import Adam # type: ignore
 from tensorflow.keras.callbacks import ModelCheckpoint # type: ignore
+import matplotlib.pyplot as plt
 
-# Add the parent directory to the sys.path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+# Set the seed for reproducibility
+seed = 42  # Chosen seed for balance and robustness
+np.random.seed(seed)
+tf.random.set_seed(seed)
+random.seed(seed)
 
-# Now we will import the function
+# Ensure that the 'utils' directory is correctly added to the Python path
+utils_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+sys.path.append(utils_path)
+
+# Import the utility function for plotting training metrics
+from training_metrics import plot_training_metrics # type: ignore
+
+# Import the function for tallying predictions
 from PredictionTally import run_prediction_tally
 
 # Determine the base directory (the root of your project)
@@ -65,7 +78,7 @@ checkpoint = ModelCheckpoint(os.path.join(trained_model_path, 'best_model.h5'),
                              save_best_only=True, 
                              mode='min')
 
-# Train the model
+# Train the model for 50 epochs
 history = model.fit(X_train, y_train, 
                     epochs=50, 
                     batch_size=32, 
@@ -98,3 +111,41 @@ print("Training complete. Model and results saved.")
 
 # Run the prediction tally
 run_prediction_tally(base_dir)
+
+
+# Task 2: Train the model and optimize convergence
+
+# Compile the model 
+model.compile(optimizer=Adam(learning_rate=0.001), loss='binary_crossentropy', metrics=['accuracy'])
+
+# Set up callbacks for early stopping and model checkpoint
+model_checkpoint = ModelCheckpoint(os.path.join(trained_model_path, 'best_model.h5'), save_best_only=True, monitor='val_loss')
+
+# Train the model
+history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=50, batch_size=32, callbacks=[model_checkpoint]) # type: ignore
+
+# Save training results
+history_df = pd.DataFrame(history.history)
+history_df.to_csv(os.path.join(results_path, 'training_results.csv'), index=False)
+
+# Call the plot_training_metrics function to generate and save plots
+plot_training_metrics(training_results_path=os.path.join(results_path, 'training_results.csv'), save_dir=results_path)
+
+# Save the model if it has improved
+model.save(os.path.join(trained_model_path, 'best_model.h5'))
+
+# Generate predictions on the test data
+predictions = model.predict(X_test)
+predictions = (predictions > 0.5).astype(int)  # Convert probabilities to binary predictions (0 or 1)
+
+# Create a DataFrame to store actual vs predicted values
+results_df = pd.DataFrame({
+    'Actual': y_test,
+    'Predicted': predictions.flatten()
+})
+
+# Save the predictions to a CSV file in the results directory
+results_df.to_csv(os.path.join(results_path, 'predictions.csv'), index=False)
+
+print(f"Predictions saved to {os.path.join(results_path, 'predictions.csv')}")
+print("Training complete. Model and results saved.")

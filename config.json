@@ -20,7 +20,10 @@
     "results_path": "Predictive_Modeling/results",
     "cluster_train_path": "Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv",
     "cluster_test_path": "Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv",   
-    "predictions_path": "Predictive_Modeling/results/predictions.csv"
+    "predictions_path": "Predictive_Modeling/results/predictions.csv",
+    
+    "training_results_path": "Predictive_Modeling/results/training_results.csv"
+
     
     
 
