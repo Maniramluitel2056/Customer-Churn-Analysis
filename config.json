@@ -12,5 +12,11 @@
     "min-max_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv",
     "standard_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv",
     "min-max_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/min-max_scaled_cluster_characteristics.csv",
-    "standard_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv"
+    "standard_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv",
+
+    "visualization_path": "Predictive_Modeling/visualization",
+    "ann_architecture_path": "Predictive_Modeling/ann_architecture",
+    "trained_model_path": "Predictive_Modeling/trained_model",
+    "results_path": "Predictive_Modeling/results",
+    "evaluation_path": "Predictive_Modeling/evaluation" 
 }
