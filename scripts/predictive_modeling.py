@@ -1,100 +1,79 @@
 import os
 import sys
-
 import json
+import random
+import numpy as np
 import pandas as pd
 from tensorflow.keras.models import Sequential # type: ignore
 from tensorflow.keras.layers import Dense, Dropout # type: ignore
 from tensorflow.keras.optimizers import Adam # type: ignore
-from tensorflow.keras.callbacks import ModelCheckpoint # type: ignore
+import tensorflow as tf
 
-# Add the parent directory to the sys.path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+# Set random seeds for reproducibility
+random.seed(42)
+np.random.seed(42)
+tf.random.set_seed(42)
 
-# Now we will import the function
-from PredictionTally import run_prediction_tally
-
-# Determine the base directory (the root of your project)
+# Set up paths
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+config_path = os.path.join(base_dir, 'config.json')
 
 # Load the configuration file from the main directory
-config_path = os.path.join(base_dir, 'config.json')
-with open(config_path) as config_file:
-    config = json.load(config_file)
+try:
+    with open(config_path) as config_file:
+        config = json.load(config_file)
+    print("Loaded configuration:", config)
+except FileNotFoundError:
+    print(f"Configuration file not found at {config_path}")
+    sys.exit(1)
+except json.JSONDecodeError as e:
+    print(f"Error decoding JSON configuration file: {e}")
+    sys.exit(1)
 
-# Define paths using absolute paths
-train_data_path = os.path.join(base_dir, config['train_data_path'])
-test_data_path = os.path.join(base_dir, config['test_data_path'])
-trained_model_path = os.path.join(base_dir, config['trained_model_path'])
+# Check if all necessary keys are in the configuration
+required_keys = ['ann_architecture_path', 'train_data_path']
+for key in required_keys:
+    if key not in config:
+        print(f"Missing key '{key}' in configuration file.")
+        sys.exit(1)
+
 ann_architecture_path = os.path.join(base_dir, config['ann_architecture_path'])
-results_path = os.path.join(base_dir, config['results_path'])
+train_data_path = os.path.join(base_dir, config['train_data_path'])
 
-# Load the training and testing data
+# Load the training data to determine input dimensions
 train_data = pd.read_csv(train_data_path)
-test_data = pd.read_csv(test_data_path)
 
-# Separate features (all columns except the target) and target (the target column) for both training and testing data
-X_train = train_data.drop(columns=['Churn_No', 'Churn_Yes'])  # Drop the target columns to get features
-y_train = train_data['Churn_Yes']  # Select the target column
+# Determine input dimensions based on provided dataset (excluding target columns)
+feature_columns = train_data.drop(columns=['Churn_No', 'Churn_Yes']).shape[1]
+input_dim = feature_columns
 
-X_test = test_data.drop(columns=['Churn_No', 'Churn_Yes'])
-y_test = test_data['Churn_Yes']  # Select the target column
+# Task 1: Define the ANN model architecture
 
-# Define the architecture of the ANN model
+# Define ANN model architecture
 model = Sequential()
-
-# Input layer
-model.add(Dense(units=64, activation='relu', input_shape=(X_train.shape[1],)))
-
-# Hidden layers
+model.add(Dense(units=64, activation='relu', input_shape=(input_dim,)))
 model.add(Dense(units=32, activation='relu'))
 model.add(Dropout(0.2))
 model.add(Dense(units=16, activation='relu'))
 model.add(Dropout(0.2))
-
-# Output layer
 model.add(Dense(units=1, activation='sigmoid'))
 
 # Compile the model
-model.compile(optimizer=Adam(), loss='binary_crossentropy', metrics=['accuracy'])
+optimizer = Adam(learning_rate=0.001)
+model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
-# Define the model checkpoint to save the best model
-checkpoint = ModelCheckpoint(os.path.join(trained_model_path, 'best_model.h5'), 
-                             monitor='val_loss', 
-                             verbose=1, 
-                             save_best_only=True, 
-                             mode='min')
+# Define the file path for saving the model architecture
+architecture_file_path = os.path.join(ann_architecture_path, 'ann_architecture.json')
 
-# Train the model
-history = model.fit(X_train, y_train, 
-                    epochs=50, 
-                    batch_size=32, 
-                    validation_data=(X_test, y_test), 
-                    callbacks=[checkpoint])
+# Check if the architecture file already exists
+if os.path.exists(architecture_file_path):
+    print(f"Model architecture file already exists at {architecture_file_path}. Skipping save.")
+else:
+    # Save the model architecture
+    with open(architecture_file_path, 'w') as f:
+        f.write(model.to_json())
+    print(f"Model architecture defined and saved to {architecture_file_path}")
 
-# Save the model architecture
-with open(os.path.join(ann_architecture_path, 'ann_architecture.json'), 'w') as f:
-    f.write(model.to_json())
+    
 
-# Save training results
-with open(os.path.join(results_path, 'training_results.txt'), 'w') as f:
-    f.write(str(history.history))
-
-# Generate predictions on the test data
-predictions = model.predict(X_test)
-predictions = (predictions > 0.5).astype(int)  # Convert probabilities to binary predictions (0 or 1)
-
-# Create a DataFrame to store actual vs predicted values
-results_df = pd.DataFrame({
-    'Actual': y_test,
-    'Predicted': predictions.flatten()
-})
-
-# Save the predictions to a CSV file in the results directory
-results_df.to_csv(os.path.join(results_path, 'predictions.csv'), index=False)
-
-print(f"Predictions saved to {os.path.join(results_path, 'predictions.csv')}")
-print("Training complete. Model and results saved.")
-
-# Run the prediction tally
-run_prediction_tally(base_dir)
+# Task 2: Train the ANN model

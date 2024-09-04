@@ -9,19 +9,14 @@
     "standard_scaled_path": "Data_Preparation/scaling_techniques/standard_scaled_dataset.csv",
     "training_set_path": "Data_Preparation/training_sets/train_dataset.csv",
     "testing_set_path": "Data_Preparation/testing_sets/test_dataset.csv",
-
     "min-max_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv",
     "standard_scaled_4_clusters_path": "Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv",
     "min-max_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/min-max_scaled_cluster_characteristics.csv",
     "standard_scaled_cluster_characteristics_path": "Clustering_Analysis/kmeans_model/standard_scaled_cluster_characteristics.csv",
 
-    "trained_model_path": "Predictive_Modeling/trained_model",
+    "visualization_path": "Predictive_Modeling/visualization",
     "ann_architecture_path": "Predictive_Modeling/ann_architecture",
+    "trained_model_path": "Predictive_Modeling/trained_model",
     "results_path": "Predictive_Modeling/results",
-    "cluster_train_path": "Clustering_Analysis/kmeans_model/min-max_scaled_4_clusters.csv",
-    "cluster_test_path": "Clustering_Analysis/kmeans_model/standard_scaled_4_clusters.csv",   
-    "predictions_path": "Predictive_Modeling/results/predictions.csv"
-    
-    
-
+    "evaluation_path": "Predictive_Modeling/evaluation" 
 }
